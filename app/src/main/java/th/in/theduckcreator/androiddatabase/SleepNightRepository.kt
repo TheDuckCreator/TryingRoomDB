@@ -16,6 +16,8 @@ class SleepNightRepository (private val sleepNightDao: SleepDatabaseDao){
     /**
      * Room is multithreading program, Observe LiveData will notify when data is changed
      * */
+
+    //Not a private Variable
     val allSleepNight : LiveData<List<SleepNight>> = sleepNightDao.getAllNights()
     fun insert(night: SleepNight){
         sleepNightDao.insert(night)

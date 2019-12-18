@@ -4,6 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import th.`in`.theduckcreator.androiddatabase.SleepNight
 
 /**
  * Creating Database
@@ -12,9 +16,33 @@ import androidx.room.RoomDatabase
 
 @Database(entities = [SleepDatabase::class],version = 1,exportSchema = false)
 abstract class SleepDatabase:RoomDatabase(){
-    abstract val sleepDatabaseDao:SleepDatabaseDao
+
+    abstract fun sleepNightDao():SleepDatabaseDao
+
+    private class SleepNightCallback (private val scope: CoroutineScope):RoomDatabase.Callback(){
+        //Room Cannot Access by UI Thread it must edit by open it and let the another thread that
+        //are in Coroutine launching
+
+        override fun onOpen(db: SupportSQLiteDatabase) {
+            super.onOpen(db)
+            INSTANCE?.let {database ->
+                scope.launch {
+                    //Mockup Program Logic
+                    var sleepDatabaseDao = database.sleepNightDao()
+
+                    sleepDatabaseDao.clear()
+
+                    var addingSleepNight = SleepNight(0,12000,14000,3)
+                    sleepDatabaseDao.insert(addingSleepNight)
+                    addingSleepNight = SleepNight(1,14000,15000,4)
+                    sleepDatabaseDao.insert(addingSleepNight)
+                }
+            }
+        }
+    }
     /** Companion Object is object that allow client to access method
      * for creating or getting database without instantiationg class */
+
     companion object{
         /** Create a private nullable Variable INSTANCE for database and initial it to null
          * INSTANCE Variable will keep a reference to database once one has created
@@ -26,7 +54,7 @@ abstract class SleepDatabase:RoomDatabase(){
         @Volatile
         private var INSTANCE: SleepDatabase? = null
 
-        fun getInstance(context:Context):SleepDatabase{
+        fun getInstance(context:Context,scope: CoroutineScope):SleepDatabase{
             /** Multiple Thread cannot access to DB at the Same time*/
             synchronized(this){
                 //smart cast : Copy Current Value
