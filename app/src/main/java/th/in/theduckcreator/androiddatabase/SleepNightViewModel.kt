@@ -20,7 +20,7 @@ class SleepNightViewModel(application:Application):AndroidViewModel(application)
 
     init {
         //annotate Dao that want to use and get Instance of Dao from Database
-        val sleepNightDao = SleepDatabase.getInstance(application).sleepDatabaseDao
+        val sleepNightDao = SleepDatabase.getInstance(application).sleepNightDao()
         repository = SleepNightRepository(sleepNightDao)
         allSleepNight = repository.allSleepNight
     }

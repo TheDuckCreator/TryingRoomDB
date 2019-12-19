@@ -54,7 +54,7 @@ abstract class SleepDatabase:RoomDatabase(){
         @Volatile
         private var INSTANCE: SleepDatabase? = null
 
-        fun getInstance(context:Context,scope: CoroutineScope):SleepDatabase{
+        fun getInstance(context:Context):SleepDatabase{
             /** Multiple Thread cannot access to DB at the Same time*/
             synchronized(this){
                 //smart cast : Copy Current Value

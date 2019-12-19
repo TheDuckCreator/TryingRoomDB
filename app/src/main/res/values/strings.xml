@@ -2,4 +2,10 @@
     <string name="app_name">AndroidDatabase</string>
     <string name="sleep">I will go sleep</string>
     <string name="sleepnight">Your Sleep Night</string>
+    <string name="sleep_request">"Enter your Quantity of Sleeping "</string>
+    <string name="night_id">Night ID</string>
+    <string name="start_time_input">Start Time</string>
+    <string name="finish_time_input">Finish Time</string>
+    <string name="sleep_quallity_input">Sleep Quality</string>
+    <string name="save_sleep_button">Save Data</string>
 </resources>
